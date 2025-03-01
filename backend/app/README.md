@@ -8,5 +8,5 @@ pip install -r requirements.txt
 Run the following command on `/backend`:
 
 ```
-python app/main.py
+python -m app.main
 ```
