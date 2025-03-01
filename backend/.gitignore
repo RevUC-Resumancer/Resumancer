@@ -1,0 +1,18 @@
+# Python-specific
+*.pyc
+*.pyo
+__pycache__/
+
+# Flask instance and configuration files
+instance/
+*.db
+
+# IDE and editor files
+.vscode/
+*.swp
+
+# Environment variable file
+.env
+
+# Other files
+*.log

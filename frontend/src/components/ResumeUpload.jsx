@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, LinearProgress, Typography, Box } from '@mui/material';
 import { UploadFile as UploadFileIcon } from '@mui/icons-material';
+import { uploadResume } from '../services/api';
 
 const ResumeUpload = ({ onFileUpload }) => {
   const [file, setFile] = useState(null); // State to hold the file
@@ -12,7 +13,7 @@ const ResumeUpload = ({ onFileUpload }) => {
     setFile(event.target.files[0]);
   };
 
-  const handleFileUpload = () => {
+  const handleFileUpload = async () => {
     if (!file) {
       setError('Please select a resume file to upload');
       return;
@@ -21,14 +22,11 @@ const ResumeUpload = ({ onFileUpload }) => {
     setIsUploading(true);
     setError('');
 
-    // Simulate upload progress
-    let progress = 0;
-    const interval = setInterval(() => {
-      if (progress < 100) {
-        progress += 10;
-        setUploadProgress(progress);
-      } else {
-        clearInterval(interval);
+    try {
+      // Make the API call to upload the file
+      const response = await uploadResume(file);
+      if (response) {
+        // If upload is successful, reset progress and show success
         setIsUploading(false);
         setUploadProgress(0);
         // Pass file to parent component for use in display
@@ -36,7 +34,11 @@ const ResumeUpload = ({ onFileUpload }) => {
         setFile(null); // Reset file after upload
         alert('Resume uploaded successfully!');
       }
-    }, 500); // Simulate progress every 500ms
+    } catch (error) {
+      setIsUploading(false);
+      setError('Error uploading the resume, please try again.');
+      console.error(error);
+    }
   };
 
   return (
