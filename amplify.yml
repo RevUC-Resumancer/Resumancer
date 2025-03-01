@@ -7,7 +7,7 @@ frontend:
         - npm ci
     build:
       commands:
-        - vite build
+        - npm run build
   artifacts:
     baseDirectory: frontend/build
     files:
