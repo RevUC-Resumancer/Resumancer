@@ -1,14 +1,15 @@
 from flask import Blueprint, request, jsonify
 import os
+from app.services.amazon_s3 import upload_to_s3
 
 # Initialize the blueprint for resume upload
 resume_upload_blueprint = Blueprint('resume_upload', __name__)
 
-# Path to save uploaded files (you can configure this as needed)
+# Optional: Local upload folder and allowed extensions (kept for file type validation)
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
 ALLOWED_EXTENSIONS = {'pdf', 'docx', 'txt', 'jpg', 'png'}
 
-# Ensure the upload folder exists
+# Ensure the upload folder exists (if needed for other operations)
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
@@ -16,7 +17,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Route to handle file upload
+# Route to handle file upload and S3 integration
 @resume_upload_blueprint.route('/upload', methods=['POST'])
 def upload_resume():
     # Check if the request contains the file part
@@ -29,17 +30,17 @@ def upload_resume():
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
     
-    # If the file is allowed, save it
+    # If the file is allowed, attempt to upload it to S3
     if file and allowed_file(file.filename):
-        # Securely handle the filename to avoid path traversal issues
-        filename = os.path.join(UPLOAD_FOLDER, file.filename)
-        file.save(filename)
-
-        # TODO: You can do any processing here (e.g., analyze the resume, store the data in a DB)
-
-        # Clean up the file after processing
-        os.remove(filename)  # This deletes the uploaded file
-
-        return jsonify({"message": f"Resume uploaded successfully to {filename}"}), 200
+        # Set your S3 bucket name from an environment variable or hard-code it
+        bucket_name = "resumancer-resume-storage"
+        
+        # Call the upload function from amazon_s3.py, passing the file
+        s3_upload_success = upload_to_s3(file, bucket_name)
+        
+        if s3_upload_success:
+            return jsonify({"message": f"Resume uploaded successfully to S3 bucket: {bucket_name}"}), 200
+        else:
+            return jsonify({"error": "File upload to S3 failed"}), 500
     else:
         return jsonify({"error": "Invalid file type. Allowed types are pdf, docx, txt, jpg, png."}), 400
