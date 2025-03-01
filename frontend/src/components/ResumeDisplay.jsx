@@ -8,7 +8,7 @@ Worker.workerSrc = pdfWorker;
 
 const ResumeDisplay = ({ file }) => {
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: '80vh', width: '90vw', display: 'flex', flexDirection: 'column' }}>
       <h2 style={{ textAlign: 'center', margin: '20px 0' }}>Resume PDF Viewer</h2>
       <div style={{ flex: 1, overflow: 'auto' }}>
         {file && (

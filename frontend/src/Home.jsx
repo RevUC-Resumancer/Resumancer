@@ -23,9 +23,8 @@ const Home = () => {
       >
         <center>
           <ResumeUpload onFileUpload={handleFileUpload} /> {/* Pass the handler to ResumeUpload */}
+          {file && <ResumeDisplay file={file} />} {/* Pass the uploaded file to ResumeDisplay */}
         </center>
-
-        {file && <ResumeDisplay file={file} />} {/* Pass the uploaded file to ResumeDisplay */}
       </Box>
     </Box>
   );
