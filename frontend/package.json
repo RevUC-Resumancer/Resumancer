@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "package.json": "^2.0.1",
+    "react": "^19.0.0",
     "resumancer": "file:"
   }
 }
