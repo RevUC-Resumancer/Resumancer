@@ -1,7 +1,7 @@
 # Python-specific
 *.pyc
 *.pyo
-__pycache__
+__pycache__/
 
 # Flask instance and configuration files
 instance/
