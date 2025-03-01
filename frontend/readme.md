@@ -6,73 +6,29 @@
 - **npm**: Comes pre-installed with Node.js. Check if installed by running `npm -v` in your terminal.
 - **Code Editor**: A code editor like [Visual Studio Code](https://code.visualstudio.com/).
 
-## Step 1: Setting up the React Application
-
-1. **Create a new React app** using `create-react-app`:
+# Setup and Run the Project (after cloning the repo)
+1. **Navigate to the project directory**:
 
    ```bash
-   npx create-react-app my-app
+   cd front-end
    ```
 
-2. **Navigate to the project directory**:
+2. **Install dependencies locally**:
 
    ```bash
-   cd my-app
+   npm install package.json
    ```
 
 3. **Start the development server**:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
-   Your React app should now be running at `http://localhost:3000/`.
+   Your React app should now be running in a localhost network environment.
 
-## Step 2: Project Structure
 
-```plaintext
-my-app/
-├── node_modules/          # Project dependencies
-├── public/                # Public files
-├── src/                   # Source files (React components)
-│   ├── App.js             # Main App component
-│   ├── index.js           # Entry point of the app
-├── package.json           # Project configuration
-└── .gitignore             # Git ignore file
-```
-
-## Step 3: Adding Components
-
-1. **Create a new component** in `src/`:
-
-   ```jsx
-   import React from 'react';
-
-   const MyComponent = () => {
-     return <h1>Hello, World!</h1>;
-   };
-
-   export default MyComponent;
-   ```
-
-2. **Use the new component** in `src/App.js`:
-
-   ```jsx
-   import React from 'react';
-   import MyComponent from './MyComponent';
-
-   function App() {
-     return (
-       <div className="App">
-         <MyComponent />
-       </div>
-     );
-   }
-
-   export default App;
-   ```
-
-## Step 4: Installing Additional Packages
+## Installing Additional Packages
 
 To install additional packages, run:
 
@@ -86,29 +42,11 @@ Example:
 npm install react-router-dom
 ```
 
-## Step 5: Running the Application
-
-To run your application locally:
-
-```bash
-npm start
-```
-
-Your app will be available at `http://localhost:3000`.
-
-## Step 6: Build for Production
-
-To create an optimized production build:
-
-```bash
-npm run build
-```
-
 This will generate a `build/` folder for deployment.
 
 ## Common Commands
 
-- `npm start`: Starts the development server.
+- `npm run dev`: Starts the development server.
 - `npm run build`: Builds the app for production.
 - `npm test`: Runs tests.
 - `npm install`: Installs dependencies.
