@@ -16,9 +16,11 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.6",
     "@mui/material": "^6.4.6",
+    "@react-pdf-viewer/core": "^3.12.0",
     "package.json": "^2.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-pdf": "^9.2.1",
     "resumancer": "file:"
   }
 }

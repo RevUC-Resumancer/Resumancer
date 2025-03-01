@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, LinearProgress, Typography, Box } from '@mui/material';
 import { UploadFile as UploadFileIcon } from '@mui/icons-material';
 
-const ResumeUpload = () => {
+const ResumeUpload = ({ onFileUpload }) => {
   const [file, setFile] = useState(null); // State to hold the file
   const [isUploading, setIsUploading] = useState(false); // To track upload progress
   const [uploadProgress, setUploadProgress] = useState(0); // Track the progress percentage
@@ -31,8 +31,9 @@ const ResumeUpload = () => {
         clearInterval(interval);
         setIsUploading(false);
         setUploadProgress(0);
-        // Reset file for demonstration purposes
-        setFile(null);
+        // Pass file to parent component for use in display
+        onFileUpload(file);
+        setFile(null); // Reset file after upload
         alert('Resume uploaded successfully!');
       }
     }, 500); // Simulate progress every 500ms
