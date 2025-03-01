@@ -1,6 +1,6 @@
 import React from 'react';
 
-const App = () => {
+const Home = () => {
   return (
     <div>
       {/* TODO: Render top-level components here */}
@@ -9,4 +9,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;
