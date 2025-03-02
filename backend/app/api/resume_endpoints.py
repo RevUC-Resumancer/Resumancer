@@ -50,7 +50,7 @@ def upload_resume():
                 sentiment = comprehend_response.get('Sentiment', 'UNKNOWN')  # Can be POSITIVE, NEGATIVE, NEUTRAL, MIXED
 
                 # Format input for GPT: Pass the resume text and sentiment in a structured format
-                gpt_input = str(resume_text+". RESUME SENTIMENT: "+sentiment)
+                gpt_input = str(resume_text)
 
                 # Generate feedback by passing the structured input (resume text + sentiment) to GPT
                 resume_feedback = get_resume_feedback(gpt_input)

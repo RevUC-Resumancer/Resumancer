@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ResumeUpload from './components/ResumeUpload';
 import ResumeDisplay from './components/ResumeDisplay';
+import FeedbackDisplay from './components/FeedbackDisplay';
 import { Box } from '@mui/material';
 
 const Home = () => {
@@ -26,7 +27,11 @@ const Home = () => {
         <center>
           <ResumeUpload onFileUpload={handleFileUpload} /> {/* Pass the handler to ResumeUpload */}
           {file && resumeData && (
-            <ResumeDisplay file={file} /> // Pass both file and resume data to ResumeDisplay
+            <>
+              {console.log(resumeData)}
+              <ResumeDisplay file={file} /> 
+              <FeedbackDisplay feedbackData={resumeData} />
+            </>
           )}
         </center>
       </Box>

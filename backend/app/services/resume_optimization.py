@@ -64,7 +64,7 @@ def get_resume_feedback(resume_text):
 
         # Handle the structure of the response
         if len(response_body) > 0:
-            return response_body['output']['message']['content'][0]  # Assuming feedback is nested in 'feedback'
+            return response_body['output']['message']['content'][0]['text']  # Assuming feedback is nested in 'feedback'
         else:
             return {"error": "Feedback not found in response."}
 

@@ -30,7 +30,7 @@ const ResumeUpload = ({ onFileUpload }) => {
         setIsUploading(false);
 
         // Pass both file and resumeData (response) back to the parent component
-        onFileUpload(file, response); // Passing both file and response
+        onFileUpload(file, response['feedback']); // Passing both file and response (feedback obj)
 
         setFile(null); // Reset file after upload
         alert('Resume uploaded and analyzed successfully!');
@@ -75,7 +75,7 @@ const ResumeUpload = ({ onFileUpload }) => {
         <Box sx={{ marginTop: '20px' }}>
           <CircularProgress />
           <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-            Uploading...
+            Uploading and Processing...
           </Typography>
         </Box>
       )}
