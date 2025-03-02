@@ -21,7 +21,7 @@ backend:
     preBuild:
       commands:
         - cd backend
-        - pip install --upgrade -r -v app/requirements.txt  # Install dependencies from requirements.txt
+        - pip install --upgrade -v -r app/requirements.txt  # Install dependencies from requirements.txt
     build:
       commands:
         - echo "Flask app doesn't require a build phase"  # No build step needed for Flask, unless you're bundling assets
