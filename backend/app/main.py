@@ -8,7 +8,7 @@ def create_app():
     app = Flask(__name__)
 
     # Enable CORS for all routes
-    CORS(app, origins=["http://localhost:5173", "https://main.dgiaauliixglz.amplifyapp.com"])  # Allow only requests from this origin
+    CORS(app)  # Allow only requests from this origin
 
     # Register Blueprints for different API endpoints
     app.register_blueprint(resume_upload_blueprint, url_prefix='/api')
