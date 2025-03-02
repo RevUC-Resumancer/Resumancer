@@ -11,11 +11,13 @@ import {
   Button, 
   Typography 
 } from '@mui/material';
+import * as pdfjsLib from 'pdfjs-dist';
 
 const Home = () => {
   const [file, setFile] = useState(null); // State to store the uploaded file
   const [resumeData, setResumeData] = useState(null); // State to store resume analysis data
   const [dialogOpen, setDialogOpen] = useState(false); // State to control dialog visibility
+  const [pdfImage, setPdfImage] = useState(null); // State to store the rendered PDF image
 
   const generateImagePattern = () => {
     const positions = [];
@@ -67,96 +69,168 @@ const Home = () => {
     setFile(uploadedFile); // Set the uploaded file
     setResumeData(analysisData); // Set the resume analysis data as an object
     setDialogOpen(true); // Open the dialog on successful submission
+
+    // Check if it's a PDF and render the image preview
+    if (uploadedFile.type === 'application/pdf') {
+      renderPdfAsImage(uploadedFile);
+    }
+  };
+
+  // Function to render PDF as image
+  const renderPdfAsImage = (pdfFile) => {
+    const fileReader = new FileReader();
+    fileReader.onload = async () => {
+      const pdfData = new Uint8Array(fileReader.result);
+      const pdf = await pdfjsLib.getDocument(pdfData).promise;
+
+      const page = await pdf.getPage(1); // Rendering the first page of the PDF
+      const scale = 1.5; // Adjust scale for rendering
+      const viewport = page.getViewport({ scale });
+
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      // Render the PDF page into the canvas context
+      await page.render({
+        canvasContext: context,
+        viewport: viewport
+      }).promise;
+
+      // Convert the canvas to an image and set it to state
+      const img = canvas.toDataURL();
+      setPdfImage(img);
+    };
+    fileReader.readAsArrayBuffer(pdfFile);
+  };
+
+  // Generate image preview for image files and PDF previews for PDFs
+  const renderFilePreview = () => {
+    if (file && file.type === 'application/pdf' && pdfImage) {
+      return <img 
+      src={pdfImage} 
+      alt="PDF Preview" 
+      style={{ 
+        maxWidth: '100%', 
+        maxHeight: '30vh', 
+        borderRadius: '8px', 
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' // Adds a subtle shadow effect
+      }} 
+    />;
+    }
+    return null;
   };
 
   return (
     <Box 
-      display="flex" 
-      flexDirection="column" 
-      height="100vh" 
+      display="block" 
       position="relative" 
       overflow="hidden" 
-      sx={{ padding: 0, margin: 0 }} 
+      sx={{ padding: 0, margin: 0, height: '100vh' }} 
     >
+      {/* Main content container becomes scrollable if content overflows */}
       <Box 
-        display="flex" 
-        flexDirection="column" 
-        justifyContent="flex-start" 
-        alignItems="stretch" 
-        flex={1} 
-        overflow="hidden" 
-        height="100%" 
+        sx={{
+          position: 'relative',
+          height: '100%',
+          width: '100%',
+          overflowY: 'auto', // Enable scrolling
+        }}
       >
-        <center>
-          <Box 
+        <Box 
+          sx={{
+            position: 'absolute', 
+            top: '50%', 
+            left: '50%', 
+            transform: 'translate(-50%, -50%)', // Center content absolutely
+            textAlign: 'center',
+            zIndex: 1,
+            width: '100%',
+          }}
+        >
+          <Typography 
+            variant="h2" 
+            color="primary" 
             sx={{
-              position: 'relative', 
-              zIndex: 1, 
-              p: 2, 
-              display: 'flex', 
-              justifyContent: 'center',
-              marginBottom: '20px', 
+              fontWeight: 'bold', 
+              fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+              letterSpacing: '1px',
+              textShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)', 
             }}
           >
-            <Typography 
-              variant="h2" 
-              color="primary" 
-              sx={{
-                fontWeight: 'bold', 
-                fontSize: '3rem', 
-                position: 'absolute', 
-                top: '0', 
-                zIndex: 2, 
-                letterSpacing: '1px',
-                textShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)' 
-              }}
-            >
-              Resumancer
-            </Typography>
-          </Box>
+            Resu<span style={{ color: 'red' }}>m</span>ancer
+          </Typography>
 
           <Box 
             sx={{
-              position: 'relative', 
-              zIndex: 1, 
-              p: 2, 
-              display: 'flex', 
-              justifyContent: 'center'
+              p: 2,
+              display: 'block',
+              justifyContent: 'center',
+              marginBottom: '20px',
             }}
           >
             <img 
               src={'/favicon.png'} 
               alt="Logo" 
-              style={{ width: '20vw' }} 
+              style={{ width: '20vw', maxWidth: '200px' }} 
             />
           </Box>
 
-          <ResumeUpload onFileUpload={handleFileUpload} />
+          <Box 
+            sx={{
+              display: 'block',
+              justifyContent: 'center',
+              alignItems: 'center', 
+              width: '100%',
+              mb: 2,
+            }}
+          >
+            {file && renderFilePreview()}
+            <ResumeUpload onFileUpload={handleFileUpload} />
+          </Box>
 
           {file && resumeData && (
             <Dialog 
               open={dialogOpen} 
               onClose={() => setDialogOpen(false)} 
               fullScreen
-              sx={{
-                height: '100vh',
-                margin: 0,
-                padding: 0,
+              scroll="paper"
+              PaperProps={{
+                sx: {
+                  maxWidth: '100%',
+                  height: '100%',
+                  margin: 0,
+                  padding: 0,
+                },
               }}
             >
               <DialogTitle>Resume Analysis</DialogTitle>
-              <DialogContent dividers>
+              <DialogContent 
+                dividers 
+                sx={{ 
+                  overflowY: 'auto', 
+                  maxHeight: 'calc(100vh - 150px)', 
+                  padding: 2 
+                }}
+              >
                 <ResumeDisplay file={file} feedbackData={resumeData} />
                 <FeedbackDisplay feedbackData={resumeData} />
               </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setDialogOpen(false)} color="primary">
+              <DialogActions 
+                sx={{ 
+                  display: 'flex',
+                  justifyContent: 'center', 
+                  p: 2,
+                }}
+              >
+                <Button onClick={() => setDialogOpen(false)} color="primary" variant="contained">
                   Close
                 </Button>
               </DialogActions>
             </Dialog>
           )}
-        </center>
+        </Box>
       </Box>
 
       {/* Randomly positioned and alternating images with animation classes */}
@@ -165,7 +239,13 @@ const Home = () => {
           key={index}
           src={pos.image} 
           alt={`Random Placeholder ${index}`}
-          className={`dragonImage ${pos.image === '/dragon1.png' ? 'dragon1' : pos.image === '/dragon2.png' ? 'dragon2' : 'dragon3'}`}
+          className={`dragonImage ${
+            pos.image === '/dragon1.png'
+              ? 'dragon1'
+              : pos.image === '/dragon2.png'
+              ? 'dragon2'
+              : 'dragon3'
+          }`}
           style={{
             top: `${pos.y}px`,
             left: `${pos.x}px`,
@@ -217,15 +297,13 @@ const Home = () => {
 
           /* Randomize the speed for each dragon */
           .dragon1 {
-            animation-duration: 12s; /* Slow float */
+            animation-duration: 12s;
           }
-
           .dragon2 {
-            animation-duration: 14s; /* Slightly slower */
+            animation-duration: 14s;
           }
-
           .dragon3 {
-            animation-duration: 16s; /* Slower float */
+            animation-duration: 16s;
           }
         `}
       </style>

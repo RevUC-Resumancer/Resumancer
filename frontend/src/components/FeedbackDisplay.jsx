@@ -184,7 +184,7 @@ const FeedbackDisplay = ({ feedbackData }) => {
             }}
             title={explanation}
           >
-            {explanation}
+            {explanation.slice(0, -1)}
           </span>
         </div>
       </div>

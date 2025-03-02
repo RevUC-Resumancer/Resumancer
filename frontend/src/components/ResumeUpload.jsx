@@ -25,7 +25,12 @@ const ResumeUpload = ({ onFileUpload }) => {
   }, []);
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const newFile = event.target.files[0];
+    setFile(newFile);
+    // Notify the parent component whenever the file changes
+    if (onFileUpload) {
+      onFileUpload(newFile);
+    }
   };
 
   const handleFileUpload = async () => {
@@ -83,28 +88,13 @@ const ResumeUpload = ({ onFileUpload }) => {
 
     return () => clearInterval(interval); // Clean up interval on component unmount or when upload finishes
   }, [isUploading, startTime]);
-
-  // Memoize the PDF Viewer to prevent it from re-rendering unnecessarily
-  const memoizedViewer = useMemo(() => {
-    if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      return (
-        <div style={{ flex: 1, overflow: 'none', opacity: isUploading ? 0.5 : 1 }}>
-          <Worker>
-            <Viewer fileUrl={objectUrl} initialPage={0} />
-          </Worker>
-        </div>
-      );
-    }
-    return null; // Return null if file is not set
-  }, [file, isUploading]); // Only re-render when 'file' or 'isUploading' changes
-
+  
   return (
-    <Box sx={{ padding: '20px' }}>
+    <Box sx={{ padding: '20px', textAlign: 'center' }}>
       <Typography variant="h6" gutterBottom>Upload your Resume</Typography>
 
       {file && (
-        <div style={{ height: 'auto', width: '15vw', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+        <div style={{ width: '10vw', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {isUploading && (
             <div style={{
               position: 'absolute',
@@ -115,13 +105,11 @@ const ResumeUpload = ({ onFileUpload }) => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0)',
               zIndex: 2
             }}>
               <CircularProgress />
             </div>
           )}
-          {memoizedViewer}
         </div>
       )}
 
