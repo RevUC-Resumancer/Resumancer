@@ -28,7 +28,7 @@ backend:
     postBuild:
       commands:
         - echo "Starting Gunicorn server"
-        - gunicorn main:app --bind 0.0.0.0:5000  # Start Gunicorn with the Flask app
+        - gunicorn app.main:app --bind 0.0.0.0:5000  # Start Gunicorn with the Flask app
   artifacts:
     baseDirectory: backend  # Flask app doesn't have a separate build directory
     files:
