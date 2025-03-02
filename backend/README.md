@@ -1,11 +1,11 @@
 # Instructions
 
-Get dependencies by going into `/backend/app` and running:
+Get dependencies by running the following command on `/backend`:
 ```
-pip install -r requirements.txt
+pip install -r app/requirements.txt
 ```
 
-Run the following command on `/backend`:
+Run the app with the following command on `/backend`:
 
 ```
 python -m app.main
