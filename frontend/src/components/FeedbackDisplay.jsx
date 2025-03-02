@@ -59,16 +59,22 @@ const FeedbackDisplay = ({ feedbackData }) => {
     return { entity, score: parseInt(score) };
   }).sort((a, b) => b.score - a.score); // Sort by score in descending order
 
+  // Extract and calculate feedback scores
+  const scores = feedbackData['final_review'].split('\n\n').map(item => {
+    const match = item.match(/Score: (\d+)/);
+    return match ? parseInt(match[1]) : 0;
+  });
+
+  // Calculate the average score
+  const averageScore = scores.reduce((acc, score) => acc + score, 0) / scores.length;
+
   // Prepare data for the first bar chart (feedback scores for each line)
   const chartData1 = {
     labels: feedbackData['final_review'].split('\n\n').map(item => item.split('\n')[0].replace('Section: ', '')),  // Use section titles for labels
     datasets: [
       {
         label: 'Feedback Scores',
-        data: feedbackData['final_review'].split('\n\n').map(item => {
-          const match = item.match(/Score: (\d+)/);
-          return match ? parseInt(match[1]) : 0;  // Default to 0 if no match
-        }),
+        data: scores,
         backgroundColor: feedbackData['final_review'].split('\n\n').map((item) => {
           const scoreMatch = item.match(/Score: (\d+)/);
           const score = scoreMatch ? parseInt(scoreMatch[1]) : 0;
@@ -97,7 +103,9 @@ const FeedbackDisplay = ({ feedbackData }) => {
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
       <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '20px', color: '#333' }}>Resume Feedback</h2>
+
       
+
       <div style={{ marginBottom: '30px' }}>
         <Bar data={chartData1} options={{ responsive: true, plugins: { title: { display: true, text: 'Feedback Score Distribution' } } }} />
       </div>
@@ -184,7 +192,7 @@ const FeedbackDisplay = ({ feedbackData }) => {
             }}
             title={explanation}
           >
-            {explanation}
+            {explanation.slice(0, -1)}
           </span>
         </div>
       </div>

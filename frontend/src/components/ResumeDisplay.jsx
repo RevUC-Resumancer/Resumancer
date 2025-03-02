@@ -6,11 +6,14 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.js';
 Worker.workerSrc = pdfWorker;
 
-const ResumeDisplay = ({ file, feedbackData }) => {
+const ResumeDisplay = ({ file, size }) => {
+  // Default to 100% width and height if size is not provided
+  const { width = '100%', height = '100vh' } = size || {};
+
   return (
     <div style={{
-      height: '100vh', // Full height of the viewport
-      width: '100vw',  // Full width of the viewport
+      height: height, // Use the passed height or default to 100vh
+      width: width,  // Use the passed width or default to 100%
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
