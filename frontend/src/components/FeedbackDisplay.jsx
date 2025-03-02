@@ -59,44 +59,31 @@ const FeedbackDisplay = ({ feedbackData }) => {
     return { entity, score: parseInt(score) };
   }).sort((a, b) => b.score - a.score); // Sort by score in descending order
 
-  // Calculate the average score
-const scores = feedbackData['final_review'].split('\n\n').map(item => {
-  const match = item.match(/Score: (\d+)/);
-  return match ? parseInt(match[1]) : 0;
-});
-const averageScore = scores.reduce((acc, score) => acc + score, 0) / scores.length;
+  // Extract and calculate feedback scores
+  const scores = feedbackData['final_review'].split('\n\n').map(item => {
+    const match = item.match(/Score: (\d+)/);
+    return match ? parseInt(match[1]) : 0;
+  });
 
-  // Combine data and options into one chartData1 object
+  // Calculate the average score
+  const averageScore = scores.reduce((acc, score) => acc + score, 0) / scores.length;
+
+  // Prepare data for the first bar chart (feedback scores for each line)
   const chartData1 = {
-    data: {
-      labels: feedbackData['final_review'].split('\n\n').map(item => item.split('\n')[0].replace('Section: ', '')),  // Use section titles for labels
-      datasets: [
-        {
-          label: 'Feedback Scores',
-          data: scores,
-          backgroundColor: feedbackData['final_review'].split('\n\n').map((item) => {
-            const scoreMatch = item.match(/Score: (\d+)/);
-            const score = scoreMatch ? parseInt(scoreMatch[1]) : 0;
-            return score >= 7 ? 'rgba(40, 167, 69, 0.7)' : 'rgba(220, 53, 69, 0.7)';
-          }),
-          borderColor: 'rgba(0, 0, 0, 0.1)',
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: `Average Score: ${averageScore.toFixed(2)}`, // Display average score as title
-          font: {
-            size: 18,
-            weight: 'bold',
-          },
-        },
+    labels: feedbackData['final_review'].split('\n\n').map(item => item.split('\n')[0].replace('Section: ', '')),  // Use section titles for labels
+    datasets: [
+      {
+        label: 'Feedback Scores',
+        data: scores,
+        backgroundColor: feedbackData['final_review'].split('\n\n').map((item) => {
+          const scoreMatch = item.match(/Score: (\d+)/);
+          const score = scoreMatch ? parseInt(scoreMatch[1]) : 0;
+          return score >= 7 ? 'rgba(40, 167, 69, 0.7)' : 'rgba(220, 53, 69, 0.7)';
+        }),
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        borderWidth: 1,
       },
-    },
+    ],
   };
 
   // Prepare data for the third bar chart (tokenized feedback entity scores)
@@ -116,7 +103,9 @@ const averageScore = scores.reduce((acc, score) => acc + score, 0) / scores.leng
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
       <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '20px', color: '#333' }}>Resume Feedback</h2>
+
       
+
       <div style={{ marginBottom: '30px' }}>
         <Bar data={chartData1} options={{ responsive: true, plugins: { title: { display: true, text: 'Feedback Score Distribution' } } }} />
       </div>
