@@ -42,18 +42,16 @@ def upload_resume():
             # Process the document using Textract and Comprehend
             textract_response, comprehend_response = process_document_from_s3(bucket_name, document_name)
             
-            if textract_response and comprehend_response:
-                # Extract parsed text or relevant data
-                resume_text = comprehend_response
-
+            if textract_response and comprehend_response:          
+                
                 # Sentiment analysis using Comprehend or another method
-                sentiment = comprehend_response.get('Sentiment', 'UNKNOWN')  # Can be POSITIVE, NEGATIVE, NEUTRAL, MIXED
+                sentiment = comprehend_response.get('Sentiment', 'NEUTRAL')  # Can be POSITIVE, NEGATIVE, NEUTRAL, MIXED
 
                 # Format input for GPT: Pass the resume text and sentiment in a structured format
-                gpt_input = str(resume_text)
+                gpt_input = str(textract_response)
 
                 # Generate feedback by passing the structured input (resume text + sentiment) to GPT
-                resume_feedback = get_resume_feedback(gpt_input)
+                resume_feedback = get_resume_feedback(gpt_input, sentiment, comprehend_response)
                                 
                 # Optionally, send feedback back in the response
                 return jsonify({

@@ -45,6 +45,7 @@ const ResumeUpload = ({ onFileUpload }) => {
 
       if (response) {
         setIsUploading(false); // End uploading process
+        console.log(response['feedback'])
         onFileUpload(file, response['feedback']); // Pass both file and response (feedback obj)
 
         const uploadEndTime = Date.now(); // Calculate end time after upload completion
@@ -90,7 +91,7 @@ const ResumeUpload = ({ onFileUpload }) => {
       return (
         <div style={{ flex: 1, overflow: 'none', opacity: isUploading ? 0.5 : 1 }}>
           <Worker>
-            <Viewer fileUrl={objectUrl} />
+            <Viewer fileUrl={objectUrl} initialPage={0} />
           </Worker>
         </div>
       );

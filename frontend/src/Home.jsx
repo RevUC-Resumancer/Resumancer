@@ -65,7 +65,7 @@ const Home = () => {
   // Function to handle the file upload and pass both file and resume data
   const handleFileUpload = (uploadedFile, analysisData) => {
     setFile(uploadedFile); // Set the uploaded file
-    setResumeData(analysisData); // Set the resume analysis data
+    setResumeData(analysisData); // Set the resume analysis data as an object
     setDialogOpen(true); // Open the dialog on successful submission
   };
 
@@ -179,7 +179,6 @@ const Home = () => {
         />
       ))}
 
-      {/* Directly embedded CSS in the JS */}
       {/* Directly embedded CSS in the JS */}
       <style>
         {`
