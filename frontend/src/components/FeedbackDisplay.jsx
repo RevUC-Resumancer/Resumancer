@@ -110,6 +110,7 @@ const FeedbackDisplay = ({ feedbackData }) => {
   <div>
     {feedbackData['final_review']
   .replace(/\n/g, ' ') // Step 1: Replace \n with space
+  .replace(/\*/g, '') // Step 2: Remove any '*' characters
   .trim() // Trim any extra spaces at the start/end
   .split(/(?=Section:|Score:|Explanation:)/) // Split on each keyword: "Section:", "Score:", "Explanation:"
   .map(part => part.trim()) // Trim spaces on each part
@@ -174,9 +175,9 @@ const FeedbackDisplay = ({ feedbackData }) => {
           <strong>Explanation: </strong>
           <span
             style={{
-              color: '#007bff',
+              color: '',
               cursor: 'pointer',
-              textDecoration: 'underline',
+              textDecoration: '',
               wordBreak: 'break-word',
               display: 'inline-block',
               maxWidth: '100%',
@@ -189,10 +190,11 @@ const FeedbackDisplay = ({ feedbackData }) => {
       </div>
     );
   })}
-  </div>
+</div>
 ) : (
   <p style={{ fontSize: '18px', color: '#555' }}>No feedback available</p>
 )}
+
 
 
     </div>

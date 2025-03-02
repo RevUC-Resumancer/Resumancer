@@ -44,6 +44,8 @@ def upload_resume():
             
             if textract_response and comprehend_response:          
                 
+                
+                
                 # Sentiment analysis using Comprehend or another method
                 sentiment = comprehend_response.get('Sentiment', 'NEUTRAL')  # Can be POSITIVE, NEGATIVE, NEUTRAL, MIXED
 
