@@ -15,3 +15,23 @@ frontend:
   cache:
     paths:
       - frontend/node_modules/**/*
+
+backend:
+  phases:
+    preBuild:
+      commands:
+        - cd backend
+        - pip install -r requirements.txt  # Install dependencies from requirements.txt
+    build:
+      commands:
+        - echo "Flask app doesn't require a build phase"  # No build step needed for Flask, unless you're bundling assets
+    postBuild:
+      commands:
+        - echo "Flask app deployed"
+  artifacts:
+    baseDirectory: backend  # Flask app doesn't have a separate build directory
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - backend/.venv/**/*  # Caching virtual environment if using one
