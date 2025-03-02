@@ -2,3 +2,4 @@ Flask==3.0.3
 flask-cors
 boto3
 python-dotenv
+gunicorn
