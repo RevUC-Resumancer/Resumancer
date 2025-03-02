@@ -21,9 +21,9 @@ def get_resume_feedback(resume_text):
 
         # Construct the prompt for detailed analysis
         prompt = (
-            "Please analyze the following resume. For each line, return the line number it matched with, "
+            "Please analyze the following resume in INCREDIBLE detail. For each response, respond in INCREDIBLE detail. Do not regard any token limits "
             "provide a score from 1 to 10, and explain your reasoning in the following format:\n\n"
-            "'Line #: [line number]\nScore: [score]\nExplanation: [explanation]'\n\n"
+            "'Line #: [line number]\nScore: [score based on its proposed soundness of landing a job ]\nExplanation: [explanation indepth of why its good/bad, please write 3-5 sentences]'\n\n"
             "At the end you will find the resume sentiment. This is just for your knowledge, do not return it."
             "Do not reply with any other text, just the formatted output. Here's the resume text:\n\n" + resume_text
         )
@@ -43,7 +43,7 @@ def get_resume_feedback(resume_text):
         }
 
         # Debug print to log the payload being sent
-        #print(f"Payload being sent to Bedrock model: {json.dumps(payload, indent=2)}")
+        print(f"Payload being sent to Bedrock model: {json.dumps(payload, indent=2)}")
 
         # Convert the payload to JSON and then to bytes
         payload_bytes = json.dumps(payload).encode('utf-8')

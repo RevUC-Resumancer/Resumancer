@@ -6,14 +6,26 @@ import '@react-pdf-viewer/core/lib/styles/index.css';
 import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.js';
 Worker.workerSrc = pdfWorker;
 
-const ResumeDisplay = ({ file }) => {
+const ResumeDisplay = ({ file, feedbackData }) => {
   return (
-    <div style={{ height: '80vh', width: '90vw', display: 'flex', flexDirection: 'column' }}>
-      <h2 style={{ textAlign: 'center', margin: '20px 0' }}>Resume PDF Viewer</h2>
-      <div style={{ flex: 1, overflow: 'auto' }}>
-        {file && (
+    <div style={{
+      height: '100vh', // Full height of the viewport
+      width: '100vw',  // Full width of the viewport
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden'
+    }}>
+      <div style={{
+        width: '100%',
+        height: '100%',
+      }}>
+        {file && file.type === 'application/pdf' && (
           <Worker>
-            <Viewer fileUrl={URL.createObjectURL(file)} />
+            <Viewer
+              fileUrl={URL.createObjectURL(file)}
+              defaultScale={1.0} // Fit the page width
+            />
           </Worker>
         )}
       </div>
