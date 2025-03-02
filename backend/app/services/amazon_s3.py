@@ -1,6 +1,6 @@
-import boto3
+import boto3 # type: ignore
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv # type: ignore
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -26,6 +26,7 @@ def upload_to_s3(file, bucket_name, object_name=None):
         's3',
         aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
         aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+        region_name=os.getenv('AWS_REGION')  # Optional: specify region if needed
     )
     
     try:

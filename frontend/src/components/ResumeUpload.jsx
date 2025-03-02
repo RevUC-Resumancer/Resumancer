@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Button, LinearProgress, Typography, Box } from '@mui/material';
+import { Button, CircularProgress, Typography, Box } from '@mui/material';
 import { UploadFile as UploadFileIcon } from '@mui/icons-material';
 import { uploadResume } from '../services/api';
 
 const ResumeUpload = ({ onFileUpload }) => {
   const [file, setFile] = useState(null); // State to hold the file
   const [isUploading, setIsUploading] = useState(false); // To track upload progress
-  const [uploadProgress, setUploadProgress] = useState(0); // Track the progress percentage
   const [error, setError] = useState(''); // For error messages
 
   const handleFileChange = (event) => {
@@ -23,16 +22,18 @@ const ResumeUpload = ({ onFileUpload }) => {
     setError('');
 
     try {
-      // Make the API call to upload the file
+      // Make the API call to upload the file and track progress
       const response = await uploadResume(file);
+
       if (response) {
         // If upload is successful, reset progress and show success
         setIsUploading(false);
-        setUploadProgress(0);
-        // Pass file to parent component for use in display
-        onFileUpload(file);
+
+        // Pass both file and resumeData (response) back to the parent component
+        onFileUpload(file, response); // Passing both file and response
+
         setFile(null); // Reset file after upload
-        alert('Resume uploaded successfully!');
+        alert('Resume uploaded and analyzed successfully!');
       }
     } catch (error) {
       setIsUploading(false);
@@ -72,9 +73,9 @@ const ResumeUpload = ({ onFileUpload }) => {
 
       {isUploading && (
         <Box sx={{ marginTop: '20px' }}>
-          <LinearProgress variant="determinate" value={uploadProgress} />
+          <CircularProgress />
           <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-            Uploading... {uploadProgress}%
+            Uploading...
           </Typography>
         </Box>
       )}

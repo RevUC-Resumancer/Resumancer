@@ -5,10 +5,12 @@ import { Box } from '@mui/material';
 
 const Home = () => {
   const [file, setFile] = useState(null); // State to store the uploaded file
+  const [resumeData, setResumeData] = useState(null); // State to store resume analysis data
 
-  // Function to handle the file upload and pass it to the state
-  const handleFileUpload = (uploadedFile) => {
-    setFile(uploadedFile);
+  // Function to handle the file upload and pass both file and resume data
+  const handleFileUpload = (uploadedFile, analysisData) => {
+    setFile(uploadedFile); // Set the uploaded file
+    setResumeData(analysisData); // Set the resume analysis data
   };
 
   return (
@@ -23,7 +25,9 @@ const Home = () => {
       >
         <center>
           <ResumeUpload onFileUpload={handleFileUpload} /> {/* Pass the handler to ResumeUpload */}
-          {file && <ResumeDisplay file={file} />} {/* Pass the uploaded file to ResumeDisplay */}
+          {file && resumeData && (
+            <ResumeDisplay file={file} /> // Pass both file and resume data to ResumeDisplay
+          )}
         </center>
       </Box>
     </Box>

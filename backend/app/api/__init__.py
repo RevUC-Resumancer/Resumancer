@@ -6,6 +6,6 @@ resume_upload_blueprint = Blueprint('resume_upload', __name__, url_prefix='/api/
 # resume_comparison_blueprint = Blueprint('resume_comparison', __name__, url_prefix='/api/comparison')
 
 # Import routes
-from .resume_upload import *
+from .resume_endpoints import *
 # from .resume_analysis import *
 # from .resume_comparison import *

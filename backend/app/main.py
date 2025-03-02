@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from app.api.resume_upload import resume_upload_blueprint
+from app.api.resume_endpoints import resume_upload_blueprint
 # from app.api.resume_analysis import resume_analysis_blueprint
 # from app.api.resume_comparison import resume_comparison_blueprint
 
