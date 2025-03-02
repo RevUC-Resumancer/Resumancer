@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Set the base URL for your backend API
-const API_BASE_URL = 'https://main.dgiaauliixglz.amplifyapp.com/api' || 'http://localhost:5000/api'; // Update to the actual backend URL if needed
+const API_BASE_URL ='http://localhost:5000/api'; // Update to the actual backend URL if needed
 
 // Function to upload resume
 export const uploadResume = async (file) => {
