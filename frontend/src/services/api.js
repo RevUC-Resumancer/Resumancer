@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 // Set the base URL for your backend API
-const API_BASE_URL ='http://localhost:5000/api'; // Update to the actual backend URL if needed
+const API_BASE_URL = window.location.hostname === 'main.dgiaauliixglz.amplifyapp.com' 
+  ? import.meta.env.VITE_API_BASE_URL 
+  : 'http://localhost:5000/api';
 
 // Function to upload resume
 export const uploadResume = async (file) => {
